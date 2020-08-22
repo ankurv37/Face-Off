@@ -5,7 +5,8 @@
   "dependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "react-html5-camera-photo": "1.5.4"
   },
   "devDependencies": {},
   "scripts": {
