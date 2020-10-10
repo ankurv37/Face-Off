@@ -9,9 +9,13 @@ import ScriptTag from 'react-script-tag';
 class App extends Component {
   state={
     persons: [
-      {name: 'Max', age:28},
-      {name: 'Manu', age:29},
-      {name: 'Steph', age:26}
+      {mbrId: 1001,name: 'Max', age:28},
+      {mbrId: 1002,name: 'Manu', age:29,uvindex:7 , SunburnTime:20 ,o3Level:25 ,underEyeWrinkles:3,
+         foreheadWrinkles:2 ,acne: 2, darkCircles: 4, skinage: 3 , elasticity: 3, firmness : 2,
+      CautionaryStatement: 'Seek shade between 10AM and 4PM when the sun’s rays are its strongest. Wearing protective clothing, including a hat and sunglasses, is a great way to limit exposure. Sunscreen should be applied every two hours, even on cloudy days, and reapplied after swimming or sweating.'},
+      {mbrId: 1003,name: 'Steph', age:26,uvindex:7 , SunburnTime:20 ,o3Level:25 ,underEyeWrinkles:3,
+         foreheadWrinkles:2 ,acne: 2, darkCircles: 4, skinage: 3 , elasticity: 3, firmness : 2,
+      CautionaryStatement: 'Seek shade between 10AM and 4PM when the sun’s rays are its strongest. Wearing protective clothing, including a hat and sunglasses, is a great way to limit exposure. Sunscreen should be applied every two hours, even on cloudy days, and reapplied after swimming or sweating.'}
     ],
     showPersons: false
   }
@@ -22,19 +26,32 @@ switchNameHandler = (newName) =>{
     {name: newName, age:28,uvindex:7 , SunburnTime:20 ,o3Level:25 ,underEyeWrinkles:3,
        foreheadWrinkles:2 ,acne: 2, darkCircles: 4, skinage: 3 , elasticity: 3, firmness : 2,
     CautionaryStatement: 'Seek shade between 10AM and 4PM when the sun’s rays are its strongest. Wearing protective clothing, including a hat and sunglasses, is a great way to limit exposure. Sunscreen should be applied every two hours, even on cloudy days, and reapplied after swimming or sweating.'},
-    {name: 'Manu', age:31},
-    {name: 'Steph', age:27}
+    {name: 'Manu', age:31,uvindex:7 , SunburnTime:20 ,o3Level:25 ,underEyeWrinkles:3,
+       foreheadWrinkles:2 ,acne: 2, darkCircles: 4, skinage: 3 , elasticity: 3, firmness : 2,
+    CautionaryStatement: 'Seek shade between 10AM and 4PM when the sun’s rays are its strongest. Wearing protective clothing, including a hat and sunglasses, is a great way to limit exposure. Sunscreen should be applied every two hours, even on cloudy days, and reapplied after swimming or sweating.'},
+    {name: 'Steph', age:27,uvindex:7 , SunburnTime:20 ,o3Level:25 ,underEyeWrinkles:3,
+       foreheadWrinkles:2 ,acne: 2, darkCircles: 4, skinage: 3 , elasticity: 3, firmness : 2,
+    CautionaryStatement: 'Seek shade between 10AM and 4PM when the sun’s rays are its strongest. Wearing protective clothing, including a hat and sunglasses, is a great way to limit exposure. Sunscreen should be applied every two hours, even on cloudy days, and reapplied after swimming or sweating.'}
   ]
 })
 }
 
-nameChangedHandler = (event) =>{
+nameChangedHandler = ( event, id) => {
+  const personIndex = this.state.persons.findIndex(p => {
+    return p.mbrId === id;
+  });
+
+  const person = {
+    ...this.state.persons[personIndex]
+  };
+
+  person.name = event.target.value;
+
+  const persons = [...this.state.persons];
+  persons[personIndex] = person;
+
   this.setState({
-    persons: [
-      {name: 'Max', age: 28},
-      {name: event.target.value, age: 29},
-      {name: 'Stephanie', age: 27}
-    ]
+    persons: person
   })
 }
 
@@ -43,6 +60,12 @@ togglePersonHandler = () => {
   this.setState({showPersons: !doesShow});
 }
 
+deletePersonHandler = (personIndex) => {
+  //const persons = this.state.persons.slice();
+  const persons = [...this.state.persons];
+  persons.splice(personIndex,1);
+  this.setState({persons:persons})
+}
 
   render() {
     const style = {
@@ -58,43 +81,40 @@ togglePersonHandler = () => {
     if (this.state.showPersons){
       persons = (
         <div>
-        <Person
-        name={this.state.persons[0].name}
-        age={this.state.persons[0].age}
-        uvindex={this.state.persons[0].uvindex}
-        SunburnTime={this.state.persons[0].SunburnTime}
-        o3Level={this.state.persons[0].o3Level}
-        underEyeWrinkles={this.state.persons[0].underEyeWrinkles}
-        foreheadWrinkles={this.state.persons[0].foreheadWrinkles}
-        acne={this.state.persons[0].acne}
-        darkCircles={this.state.persons[0].darkCircles}
-        skinage={this.state.persons[0].skinage}
-        elasticity={this.state.persons[0].elasticity}
-        firmness={this.state.persons[0].firmness}
-        CautionaryStatement={this.state.persons[0].CautionaryStatement}
-        click={this.switchNameHandler.bind(this, 'Ankur')} >
-        </Person>
-
-        <Person
-        name={this.state.persons[1].name}
-        age={this.state.persons[1].age}
-        click={this.switchNameHandler.bind(this, 'Max !')}
-        changed={this.nameChangedHandler} > My Hobbies : Racing
-        </Person>
-
-        <Person
-        name={this.state.persons[2].name}
-        age={this.state.persons[2].age} />
+        {
+          this.state.persons.map((person, index) =>{
+            return <Person
+            click={() => this.deletePersonHandler(index)}
+            key={person.mbrId}
+            changed={(event) => this.nameChangedHandler(event, person.mbrId)}
+            name={person.name}
+            age={person.age}
+            uvindex={person.uvindex}
+            SunburnTime={person.SunburnTime}
+            o3Level={person.o3Level}
+            underEyeWrinkles={person.underEyeWrinkles}
+            foreheadWrinkles={person.foreheadWrinkles}
+            acne={person.acne}
+            darkCircles={person.darkCircles}
+            skinage={person.skinage}
+            elasticity={person.elasticity}
+            firmness={person.firmness}
+            CautionaryStatement={person.CautionaryStatement} />
+          })
+        }
         </div>
       );
     }
     return (
       <div className="App">
         <h1>Hi, I am Sydney Face AI</  h1>
-      <Image />
+        <Image />
         <button
         style={style}
-        onClick={this.togglePersonHandler}>Get Results </button>
+        onClick={this.togglePersonHandler}>Toggle Profiles </button>
+        <button
+        style={style}
+        onClick={this.switchNameHandler.bind(this, 'Ankur')}>Get Results </button>
         {persons}
 
       </div>
