@@ -32,6 +32,15 @@ my-app/
     index.css
     index.js
     logo.svg
+    Person/
+      Person.js
+      Person.css
+    Image/
+      Image.js
+      ImagePreview.js
+      styles/
+        imagePreview.css
+
 ```
 
 For the project to build, **these files must exist with exact filenames**:
